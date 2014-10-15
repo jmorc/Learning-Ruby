@@ -11,7 +11,18 @@ class Board
   def initialize(fill_board = false)
     @grid = make_grid
     set_board if fill_board
-
+  end
+  
+  def check_mate?(color)
+    if in_check?(color)
+      list_pieces = same_color_pieces(color)
+      return list_pieces.all? { |piece| piece.valid_moves.empty? }
+    end
+    false
+  end
+  
+  def same_color_pieces color
+    @grid.flatten.compact.select { |piece| piece.color == color }
   end
   
   def display

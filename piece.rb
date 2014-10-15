@@ -18,6 +18,11 @@ class Piece
     @board[pos].color == self.color    
   end
   
+  def valid_moves
+    semi_legal_moves = self.moves
+    semi_legal_moves.select { |pos| !move_into_check?(pos) }      
+  end
+  
   private
   
   def add_vector(pos, dir)
