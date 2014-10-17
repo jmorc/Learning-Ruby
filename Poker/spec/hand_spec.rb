@@ -62,8 +62,8 @@ describe 'Hand Class' do
       card1 = Card.new(:clubs, :four)
       card2 = Card.new(:clubs, :three)
       card3 = Card.new(:clubs, :ace)
-      card4 = Card.new(:clubs, :three)
-      card5 = Card.new(:clubs, :ace)
+      card4 = Card.new(:clubs, :king)
+      card5 = Card.new(:clubs, :five)
       
       hand = Hand.new(deck)
       hand.cards = [card1, card2, card3, card4, card5]
@@ -77,13 +77,55 @@ describe 'Hand Class' do
       card2 = Card.new(:spades, :four)
       card3 = Card.new(:clubs, :ace)
       card4 = Card.new(:clubs, :three)
+      card5 = Card.new(:clubs, :five)
+      
+      hand = Hand.new(deck)
+      hand.cards = [card1, card2, card3, card4, card5]
+      hand.assess
+      
+      expect(hand.state).to eq(:one_pair)
+    end
+    
+    it 'recognizes two pairs' do
+      card1 = Card.new(:clubs, :four)
+      card2 = Card.new(:spades, :four)
+      card3 = Card.new(:clubs, :ace)
+      card4 = Card.new(:clubs, :three)
       card5 = Card.new(:clubs, :ace)
       
       hand = Hand.new(deck)
       hand.cards = [card1, card2, card3, card4, card5]
       hand.assess
       
-      expect(hand.state) to eq(:one_pair)
+      expect(hand.state).to eq(:two_pair)
+    end
+    
+    it 'recognizes three of a kind' do
+      card1 = Card.new(:clubs, :four)
+      card2 = Card.new(:spades, :four)
+      card3 = Card.new(:hearts, :four)
+      card4 = Card.new(:clubs, :three)
+      card5 = Card.new(:clubs, :ace)
+      
+      hand = Hand.new(deck)
+      hand.cards = [card1, card2, card3, card4, card5]
+      hand.assess
+      
+      expect(hand.state).to eq(:three_of_a_kind)
+    end
+    
+    it 'recognizes four of a kind' do
+      card1 = Card.new(:clubs, :four)
+      card2 = Card.new(:spades, :four)
+      card3 = Card.new(:hearts, :four)
+      card4 = Card.new(:diamonds, :four)
+      card5 = Card.new(:clubs, :ace)
+      
+      hand = Hand.new(deck)
+      hand.cards = [card1, card2, card3, card4, card5]
+      hand.assess
+      
+      expect(hand.state).to eq(:four_of_a_kind)
     end
     
   end

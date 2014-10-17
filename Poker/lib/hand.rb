@@ -1,4 +1,5 @@
 require 'deck'
+require 'debugger'
 
 class Hand
 
@@ -9,6 +10,7 @@ class Hand
                  :straight,
                  :flush,
                  :full_house,
+                 :four_of_a_kind,
                  :straight_flush]
               
   attr_accessor :cards
@@ -39,7 +41,24 @@ class Hand
   def assess
     if flush?
       @state = :flush
-    end    
+    end
+    
+    if one_pair?
+      @state = :one_pair
+    end
+    
+    if two_pair?
+      @state = :two_pair
+    end
+    
+    if three_of_a_kind?
+      @state = :three_of_a_kind
+    end
+    
+    if four_of_a_kind?
+      @state = :four_of_a_kind
+    end
+  
   end
   
   def beats?(other_hand)
@@ -48,6 +67,58 @@ class Hand
   def flush?
     suit = @cards[0].suit
     @cards.all? { |card| card.suit == suit }
+  end
+  
+  def one_pair?
+    counts  = Hash.new(0)
+    
+    @cards.each do |card|
+      counts[card.value] += 1
+    end
+    
+    #debugger
+    counts.select! { |h,k| k == 2}
+    return true if counts.size == 1
+    false
+  end
+  
+  def two_pair?
+    counts  = Hash.new(0)
+    
+    @cards.each do |card|
+      counts[card.value] += 1
+    end
+    
+    #debugger
+    counts.select! { |h,k| k == 2}
+    return true if counts.size == 2
+    false
+  end
+  
+  def three_of_a_kind?
+    counts  = Hash.new(0)
+    
+    @cards.each do |card|
+      counts[card.value] += 1
+    end
+    
+    #debugger
+    counts.select! { |h,k| k == 3}
+    return true if counts.size == 1
+    false
+  end
+  
+  def four_of_a_kind?
+    counts  = Hash.new(0)
+    
+    @cards.each do |card|
+      counts[card.value] += 1
+    end
+    
+    #debugger
+    counts.select! { |h,k| k == 4}
+    return true if counts.size == 1
+    false
   end
   
 end
