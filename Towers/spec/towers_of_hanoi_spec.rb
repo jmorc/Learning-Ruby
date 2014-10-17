@@ -1,5 +1,5 @@
 require 'towers_of_hanoi'
-
+require 'debugger'
 describe "Towers of Hanoi"  do
   let(:game) { TowersOfHanoi.new }
   let(:source) { 0 }
@@ -20,10 +20,20 @@ describe "Towers of Hanoi"  do
     expect(game.towers).to eq([ (2..5).to_a, [1], [] ])
   end
   
+  it 'cannot move from an empty tower' do
+    #expect an error if source is empty
+    expect{game.move(1,0)}.to raise_error
+  end
+  
   it 'cannot move a large disk on top of a small disk' do
+    #expect an error if source disk is bigger than target disk
     game.move(0, 1)
-    expect(game.move(0, 1)).to raise_error(StandardError)
-    
+    expect{game.move(0, 1)}.to raise_error
+  end
+  
+  it 'detects a win state' do
+    game.towers[1] = (1..5).to_a
+    expect(game.won?).to eq(true)
   end
     
 end

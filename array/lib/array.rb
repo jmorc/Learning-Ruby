@@ -20,4 +20,20 @@ class Array
     result
   end
   
+  def my_transpose
+    size = self[0].count
+    result = Array.new(size) { Array.new(size) } 
+    if self[0].count != self.count
+      raise StandardError.new "Matrix is not square"
+    end
+    (0...self.size).each do |i|
+      (0...self.size).each do |j|
+        result[i][j] = self[j][i]
+      end
+    end
+    result
+  end
+  
+  
+  
 end
