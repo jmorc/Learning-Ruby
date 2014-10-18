@@ -37,7 +37,6 @@ class Hand
     end
   end
   
-  
   def assess
     if flush?
       @state = :flush
@@ -58,9 +57,21 @@ class Hand
     if four_of_a_kind?
       @state = :four_of_a_kind
     end
-  
+
+    if full_house?
+      @state = :full_house
+    end  
+    
+    if straight?
+      @state = :straight
+    end
+    
+    if straight_flush?
+      @state = :straight_flush
+    end
+    
   end
-  
+   
   def beats?(other_hand)
   end
   
@@ -108,6 +119,10 @@ class Hand
     false
   end
   
+  def full_house?
+    one_pair? && three_of_a_kind?
+  end
+  
   def four_of_a_kind?
     counts  = Hash.new(0)
     
@@ -121,4 +136,25 @@ class Hand
     false
   end
   
+  def straight?
+    
+    
+    sorted = @cards.sort_by {|card| card.poker_value }
+    values = sorted.map { |card| card.value }
+    if values == [:ace, :ten, :jack, :queen, :king]
+      return true
+    end
+    
+    (0...@cards.size - 1).each do |i|
+      return false if sorted[i].poker_value + 1 != sorted[i + 1].poker_value
+    end
+    
+    true
+  end
+  
+  def straight_flush?
+    straight? && flush?
+  end
+  
 end
+  

@@ -128,7 +128,71 @@ describe 'Hand Class' do
       expect(hand.state).to eq(:four_of_a_kind)
     end
     
+    it 'recognizes a full house' do
+      card1 = Card.new(:clubs, :four)
+      card2 = Card.new(:spades, :four)
+      card3 = Card.new(:hearts, :four)
+      card4 = Card.new(:diamonds, :three)
+      card5 = Card.new(:clubs, :three)
+      
+      hand = Hand.new(deck)
+      hand.cards = [card1, card2, card3, card4, card5]
+      hand.assess
+      
+      expect(hand.state).to eq(:full_house)
+    end
+    
+    it 'recognizes a straight without ending ace' do
+      card1 = Card.new(:clubs, :two)
+      card2 = Card.new(:spades, :three)
+      card3 = Card.new(:hearts, :four)
+      card4 = Card.new(:diamonds, :five)
+      card5 = Card.new(:clubs, :six)
+      
+      hand = Hand.new(deck)
+      hand.cards = [card1, card2, card3, card4, card5]
+      hand.assess
+      
+      expect(hand.state).to eq(:straight)
+    end
+
+    it 'recognizes a straight ending with ace' do
+      card1 = Card.new(:clubs, :ten)
+      card2 = Card.new(:spades, :king)
+      card3 = Card.new(:hearts, :queen)
+      card4 = Card.new(:diamonds, :jack)
+      card5 = Card.new(:clubs, :ace)
+      
+      hand = Hand.new(deck)
+      hand.cards = [card1, card2, card3, card4, card5]
+      hand.assess
+      
+      expect(hand.state).to eq(:straight)
+    end
+    
+    it 'recognizes a straight flush' do
+      card1 = Card.new(:clubs, :two)
+      card2 = Card.new(:clubs, :three)
+      card3 = Card.new(:clubs, :four)
+      card4 = Card.new(:clubs, :five)
+      card5 = Card.new(:clubs, :six)
+ 
+      hand = Hand.new(deck)
+      hand.cards = [card1, card2, card3, card4, card5]
+      hand.assess
+      
+      expect(hand.state).to eq(:straight_flush)     
+    end 
+    
   end
   
-  
+  # context 'Beating hands' do
+#     let(:deck) { Deck.new }
+#
+#     it 'Recognizes losing hand' do
+#       hand1 = Hand.new(deck)
+#
+#       hand1.b
+#     end
+#   end
 end
